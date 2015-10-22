@@ -23,6 +23,8 @@ console.log('everything is loaded up')
     // new Router()
 // }
 
+import LoginScreen from "./loginView.js"
+import ProfileView from "./profileScreen.js"
 
 var APP_ID = '2Ny36UiXeUinzRGlaqPhQdCLF9lau4Prr3IlwUyR',
 	JS_KEY = 'GY4eu2UHA24yTwzR3Lpjsu9MVRJWKHA23AH6yYYk',
@@ -55,12 +57,29 @@ var MedRoute = Backbone.Router.extend({
 
 	routes:{
 		'login': 'showLoginView',
-		'signup': 'showSignUp'
+		'signup': 'showSignUp',
+		"profile": "showProfile"
 	},
 
 	initialize: function(){
 		this.mc = new MediumPostCollection()
 		Backbone.history.start()
+	},
+
+	showProfile: function() {
+		// var paramObject = {
+		// 	userid: Parse.User.current().id
+		// }
+		// var stringyParam = JSON.stringify(paramObject)
+
+		// this.mc.fetch({
+		// 	data: {
+		// 		where: stringyParam
+		// 	},
+		// 	headers: this.mc.parseHeaders,
+		// 	processData: true
+		// })
+		React.render(<ProfileView />,document.querySelector("#container"))
 	},
 
 	showSignUp: function(){

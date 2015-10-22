@@ -1,4 +1,4 @@
-React = require('react')
+var React = require('react')
 
 var LoginScreen = React.createClass({
 
@@ -35,11 +35,10 @@ var SignUpScreen = React.createClass({
 					<input type='text' placeholder='choose username'/>
 					<input type='password' placeholder='choose password'/>
 				</div>
-				<button onClick={}>Create User</button>
+				<button>Create User</button>
 			</div>	
 			)
 	}
 })
 
-export LoginScreen
-export SignUpScreen
+export default LoginScreen
