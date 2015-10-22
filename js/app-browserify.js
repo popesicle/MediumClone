@@ -22,7 +22,10 @@ console.log('everything is loaded up')
     // start app
     // new Router()
 // }
+import {LoginScreen} from "./loginView.js"
+import {SignUpScreen} from "./loginView.js"
 
+window.p = Parse
 
 var APP_ID = '2Ny36UiXeUinzRGlaqPhQdCLF9lau4Prr3IlwUyR',
 	JS_KEY = 'GY4eu2UHA24yTwzR3Lpjsu9MVRJWKHA23AH6yYYk',
@@ -58,17 +61,41 @@ var MedRoute = Backbone.Router.extend({
 		'signup': 'showSignUp'
 	},
 
+	createNewUser: function(username, password){
+		console.log(username)
+		var newUsr = new Parse.User()
+
+		newUsr.set('username', username)
+		newUsr.set('password', password)
+		newUsr.signUp().then(function(user){
+			location.hash = 'profile'
+			alert('Congratulations! ' + user + ' has signed up for Median!')
+		}).fail(function(err){
+			alert('that username is already taken, please try another.')
+		})
+	},
+
+	logInUser: function(username, password){
+			Parse.User.logIn(username, password)
+			.then(function(){
+				console.log('success')
+				location.hash = 'profile'
+			}).fail(function(err){
+				alert('Username or password is incorrect, please try again.')
+			})
+	},
+
 	initialize: function(){
 		this.mc = new MediumPostCollection()
 		Backbone.history.start()
 	},
 
 	showSignUp: function(){
-		React.render(<SignUpScreen/>,document.querySelector('#container'))
+		React.render(<SignUpScreen sendUserData={this.createNewUser}/>,document.querySelector('#container'))
 	},
 
 	showLoginView: function(){
-		React.render(<LoginScreen/>, document.querySelector('#container'))
+		React.render(<LoginScreen logInUser={this.logInUser}/>, document.querySelector('#container'))
 	}
 
 })
