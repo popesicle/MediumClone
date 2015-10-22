@@ -1,0 +1,1 @@
+console.error("SyntaxError: /Users/tylerneustaedter/Documents/TIY/MediumClone/js/app-browserify.js: JSX attributes must only be assigned a non-empty expression (89:20) while parsing file: /Users/tylerneustaedter/Documents/TIY/MediumClone/js/app-browserify.js");
