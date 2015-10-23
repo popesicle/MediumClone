@@ -73,6 +73,15 @@ img {
  * YOUR CODE HERE
  */
 
+#homepage {
+    position: relative;
+    min-width: 850px;
+}
+
+#homePageHeader {
+
+    font-family: Quicksand;
+}
 
 #loginDiv {
 
@@ -99,6 +108,14 @@ img {
 
     width: 128px;
     margin: .5rem;
+}
+
+#sidebar {
+
+   float: right;
+   border: 2px solid black;
+   width: 300px;
+
 }
 
 #signUp {

@@ -24,6 +24,8 @@ console.log('everything is loaded up')
 // }
 import {LoginScreen} from "./loginView.js"
 import {SignUpScreen} from "./loginView.js"
+import {HomeView} from "./HomeView.js"
+import {RecentPosts} from "./HomeView.js"
 
 window.p = Parse
 
@@ -50,7 +52,11 @@ var MediumPostCollection = Backbone.Collection.extend({
 		"X-Parse-REST-API-Key": REST_KEY
 	},
 
-	model: MediumPostModel
+	model: MediumPostModel,
+
+	parse: function(responseData){
+		return responseData.results
+	}
 })
 
 
@@ -58,7 +64,8 @@ var MedRoute = Backbone.Router.extend({
 
 	routes:{
 		'login': 'showLoginView',
-		'signup': 'showSignUp'
+		'signup': 'showSignUp',
+		'homepage': 'showHomeView'
 	},
 
 	createNewUser: function(username, password){
@@ -68,7 +75,7 @@ var MedRoute = Backbone.Router.extend({
 		newUsr.set('username', username)
 		newUsr.set('password', password)
 		newUsr.signUp().then(function(user){
-			location.hash = 'profile'
+			location.hash = 'homepage'
 			alert('Congratulations! ' + user + ' has signed up for Median!')
 		}).fail(function(err){
 			alert('that username is already taken, please try another.')
@@ -79,7 +86,7 @@ var MedRoute = Backbone.Router.extend({
 			Parse.User.logIn(username, password)
 			.then(function(){
 				console.log('success')
-				location.hash = 'profile'
+				location.hash = 'homepage'
 			}).fail(function(err){
 				alert('Username or password is incorrect, please try again.')
 			})
@@ -87,6 +94,10 @@ var MedRoute = Backbone.Router.extend({
 
 	initialize: function(){
 		this.mc = new MediumPostCollection()
+		this.mc.fetch({
+			headers: this.mc.parseHeaders,
+			processData: true
+		})
 		Backbone.history.start()
 	},
 
@@ -96,6 +107,10 @@ var MedRoute = Backbone.Router.extend({
 
 	showLoginView: function(){
 		React.render(<LoginScreen logInUser={this.logInUser}/>, document.querySelector('#container'))
+	},
+
+	showHomeView: function(){
+		React.render(<HomeView postCollection={this.mc}/>, document.querySelector('#container'))
 	}
 
 })
