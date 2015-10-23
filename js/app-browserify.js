@@ -26,6 +26,9 @@ import {LoginScreen} from "./loginView.js"
 import {SignUpScreen} from "./loginView.js"
 import {HomeView} from "./HomeView.js"
 import {RecentPosts} from "./HomeView.js"
+import ProfileView from "./profileScreen.js"
+import NewBlogView from"./newBlog.js"
+
 
 window.p = Parse
 
@@ -63,24 +66,14 @@ var MediumPostCollection = Backbone.Collection.extend({
 var MedRoute = Backbone.Router.extend({
 
 	routes:{
+		"logout": "logUserOut",
 		'login': 'showLoginView',
 		'signup': 'showSignUp',
-		'homepage': 'showHomeView'
+		'homepage': 'showHomeView',
+		"profile": "showProfile",
+		"new-story": "blogPostView"
 	},
 
-	createNewUser: function(username, password){
-		console.log(username)
-		var newUsr = new Parse.User()
-
-		newUsr.set('username', username)
-		newUsr.set('password', password)
-		newUsr.signUp().then(function(user){
-			location.hash = 'homepage'
-			alert('Congratulations! ' + this.username + ' has signed up for Median!')
-		}).fail(function(err){
-			alert('that username is already taken, please try another.')
-		})
-	},
 
 	logInUser: function(username, password){
 			Parse.User.logIn(username, password)
@@ -92,13 +85,69 @@ var MedRoute = Backbone.Router.extend({
 			})
 	},
 
-	initialize: function(){
-		this.mc = new MediumPostCollection()
+	createNewUser: function(username, password){
+		console.log(username)
+		var newUsr = new Parse.User()
+
+		newUsr.set('username', username)
+		newUsr.set('password', password)
+		newUsr.signUp().then(function(user){
+			location.hash = 'profile'
+			alert('Congratulations! ' + user + ' has signed up for Median!')
+		}).fail(function(err){
+			alert('that username is already taken, please try another.')
+		})
+	},
+
+	createBlogPost: function(title, body) {
+		var newPost = new MediumPostModel(),
+		modelParams = {
+			title: title,
+			body: body,
+			userId: Parse.User.current().id
+		}
+		newPost.set(modelParams)
+		this.mc.add(newPost)
+		newPost.save(null,{
+			headers: newPost.parseHeaders
+		}).then(
+			//success
+			function(title, body) {
+				alert("Successful blog post!")
+			}).fail(
+				//fail
+				function(err) {
+					alert("Something terible happened! Try again.")
+				}
+			)		
+	},
+
+	getUsername: function() {
+		var name = Parse.User.current().getUsername()
+		return name
+	},
+
+	logUserOut: function(){
+		Parse.User.logOut().then(function(){
+			console.log("clicked")
+			location.hash = "login"
+		})
+	},
+
+	showProfile: function() {
+		var paramObject = {
+			userid: Parse.User.current().id
+		}
+		var stringyParam = JSON.stringify(paramObject)
+
 		this.mc.fetch({
+			data: {
+				where: stringyParam
+			},
 			headers: this.mc.parseHeaders,
 			processData: true
 		})
-		Backbone.history.start()
+		React.render(<ProfileView profileInfo={this.mc} getUsername={this.getUsername}/>,document.querySelector("#container"))
 	},
 
 	showSignUp: function(){
@@ -117,6 +166,22 @@ var MedRoute = Backbone.Router.extend({
 		}).then(function(responseData){console.log("dicks", responseData)})
 		React.render(<HomeView postCollection={this.mc}/>, document.querySelector('#container'))
 	}
+
+	blogPostView: function() {
+		React.render(<NewBlogView sendBlogInfo={this.createBlogPost.bind(this)}/>,document.querySelector("#container"))
+	},
+
+	initialize: function(){
+		this.mc = new MediumPostCollection()
+		this.mc.fetch({
+			headers: this.mc.parseHeaders,
+			processData: true
+		})
+		if (!Parse.User.current()) {
+			location.hash = "login"
+		}
+		Backbone.history.start()
+	},
 
 })
 
