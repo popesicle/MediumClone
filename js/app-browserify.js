@@ -23,8 +23,11 @@ console.log('everything is loaded up')
     // new Router()
 // }
 
-import LoginScreen from "./loginView.js"
+import {LoginScreen} from "./loginView.js"
+import {SignUpScreen} from "./loginView.js"
 import ProfileView from "./profileScreen.js"
+
+window.p = Parse
 
 var APP_ID = '2Ny36UiXeUinzRGlaqPhQdCLF9lau4Prr3IlwUyR',
 	JS_KEY = 'GY4eu2UHA24yTwzR3Lpjsu9MVRJWKHA23AH6yYYk',
@@ -56,39 +59,75 @@ var MediumPostCollection = Backbone.Collection.extend({
 var MedRoute = Backbone.Router.extend({
 
 	routes:{
+		"logout": "logUserOut",
 		'login': 'showLoginView',
 		'signup': 'showSignUp',
 		"profile": "showProfile"
 	},
 
-	initialize: function(){
-		this.mc = new MediumPostCollection()
-		Backbone.history.start()
+
+	createNewUser: function(username, password){
+		console.log(username)
+		var newUsr = new Parse.User()
+
+		newUsr.set('username', username)
+		newUsr.set('password', password)
+		newUsr.signUp().then(function(user){
+			location.hash = 'profile'
+			alert('Congratulations! ' + user + ' has signed up for Median!')
+		}).fail(function(err){
+			alert('that username is already taken, please try another.')
+		})
+	},
+
+	logInUser: function(username, password){
+			Parse.User.logIn(username, password)
+			.then(function(){
+				console.log('success')
+				location.hash = 'profile'
+			}).fail(function(err){
+				alert('Username or password is incorrect, please try again.')
+			})
+	},
+
+	logUserOut: function(){
+		Parse.User.logOut().then(function(){
+			console.log("clicked")
+			location.hash = "login"
+		})
 	},
 
 	showProfile: function() {
-		// var paramObject = {
-		// 	userid: Parse.User.current().id
-		// }
-		// var stringyParam = JSON.stringify(paramObject)
+		var paramObject = {
+			userid: Parse.User.current().id
+		}
+		var stringyParam = JSON.stringify(paramObject)
 
-		// this.mc.fetch({
-		// 	data: {
-		// 		where: stringyParam
-		// 	},
-		// 	headers: this.mc.parseHeaders,
-		// 	processData: true
-		// })
-		React.render(<ProfileView />,document.querySelector("#container"))
+		this.mc.fetch({
+			data: {
+				where: stringyParam
+			},
+			headers: this.mc.parseHeaders,
+			processData: true
+		})
+		React.render(<ProfileView profileInfo={this.mc} />,document.querySelector("#container"))
 	},
 
 	showSignUp: function(){
-		React.render(<SignUpScreen/>,document.querySelector('#container'))
+		React.render(<SignUpScreen sendUserData={this.createNewUser}/>,document.querySelector('#container'))
 	},
 
 	showLoginView: function(){
-		React.render(<LoginScreen/>, document.querySelector('#container'))
-	}
+		React.render(<LoginScreen logInUser={this.logInUser}/>, document.querySelector('#container'))
+	},
+
+	initialize: function(){
+		this.mc = new MediumPostCollection()
+		if (!Parse.User.current()) {
+			location.hash = "login"
+		}
+		Backbone.history.start()
+	},
 
 })
 
