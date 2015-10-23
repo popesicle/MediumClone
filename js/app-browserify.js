@@ -71,7 +71,7 @@ var MedRoute = Backbone.Router.extend({
 		'signup': 'showSignUp',
 		'homepage': 'showHomeView',
 		"profile": "showProfile",
-		"new-story": "blogPostView"
+		"new-story": "blogPostView",
 	},
 
 
