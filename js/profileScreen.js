@@ -10,7 +10,6 @@ var ProfileView = React.createClass({
 			<div>
 				<Header />
 				<UserStuff userInfo={this.props.profileInfo} getUsername={this.props.getUsername}/>
-				<BlogSnippets getUsername={this.props.getUsername}/>
 			</div>
 			)
 	}
@@ -25,11 +24,16 @@ var Header = React.createClass({
 		location.hash = "new-story"
 	},
 
+	_goToProfile: function() {
+		location.hash = "profile"
+	},
+
 	render: function() {
 		return(
 			<div id="header">
 				<img id="logo" src="http://lh5.ggpht.com/_RT2ZlZ4zOLQ/TS3lV7cYHfI/AAAAAAAAAX4/xAs5J9F_UZ8/iyudz%20blog%20logo.png"/>
-				<button id="logOut" onClick={this._handleLogOut} type="button">Log Out</button>
+				<button id="profile" onClick ={this._goToProfile} type="button">Profile</button>
+ 				<button id="logOut" onClick={this._handleLogOut} type="button">Log Out</button>
 				<button id="write" onClick={this._newStory} type="button">Tell Us A Story</button>
 			</div>
 			)
@@ -37,8 +41,12 @@ var Header = React.createClass({
 })
 
 var UserStuff = React.createClass({
+	_getBlogSnippets: function(blogObj) {
+		return <BlogSnippets userInfo={this.props.userInfo} getUsername={this.props.getUsername}/> 
+	},
 
 	render: function() {
+		var blogArray = this.props.userInfo
 		return(
 			<div id="userInfo">
 				<h3 id="userName">{this.props.getUsername()}</h3>
@@ -55,6 +63,7 @@ var UserStuff = React.createClass({
 					<a href="https://www.facebook.com"><i className="fa fa-facebook-official"></i></a>
 					<a href="https://twitter.com/"><i className="fa fa-twitter-square"></i></a>
 				</div>
+				{blogArray.map(this._getBlogSnippets)}
 			</div>
 			)
 	}
@@ -66,9 +75,9 @@ var BlogSnippets = React.createClass({
 			<div id="blogs">
 				<h4>Blogs!!!</h4>
 				<p id="blogName">{this.props.getUsername()}</p>
-				<p id="blogDate">Date Created</p>
-				<p id="blogTitle">Blog Title</p>
-				<p id="blogSnippet">This will be a blog snippett. Bloggity blog. Bloggity blog blog blog. How about a blog to go with your blog? Sorry we're all out of blogs. How about a blog?</p>
+				<p id="blogDate">{this.props.userInfo.attributes.createdAt}</p>
+				<p id="blogTitle">{this.props.userInfo.attributes.title}</p>
+				<p id="blogSnippet">{this.props.userInfo.attributes.body}</p>
 				<div id="snippetFooter">
 					<a href="#blog-post-id" id="blogPost">Read more</a>
 					<i className="fa fa-comment"></i>
