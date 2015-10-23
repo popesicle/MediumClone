@@ -26,6 +26,7 @@ console.log('everything is loaded up')
 import {LoginScreen} from "./loginView.js"
 import {SignUpScreen} from "./loginView.js"
 import ProfileView from "./profileScreen.js"
+import NewBlogView from"./newBlog.js"
 
 window.p = Parse
 
@@ -62,9 +63,13 @@ var MedRoute = Backbone.Router.extend({
 		"logout": "logUserOut",
 		'login': 'showLoginView',
 		'signup': 'showSignUp',
-		"profile": "showProfile"
+		"profile": "showProfile",
+		"new-story": "createBlogPost"
 	},
 
+	createBlogPost: function() {
+		React.render(<NewBlogView />,document.querySelector("#container"))
+	},
 
 	createNewUser: function(username, password){
 		console.log(username)
@@ -78,6 +83,11 @@ var MedRoute = Backbone.Router.extend({
 		}).fail(function(err){
 			alert('that username is already taken, please try another.')
 		})
+	},
+
+	getUsername: function() {
+		var name = Parse.User.current().getUsername()
+		return name
 	},
 
 	logInUser: function(username, password){
@@ -110,7 +120,7 @@ var MedRoute = Backbone.Router.extend({
 			headers: this.mc.parseHeaders,
 			processData: true
 		})
-		React.render(<ProfileView profileInfo={this.mc} />,document.querySelector("#container"))
+		React.render(<ProfileView profileInfo={this.mc} getUsername={this.getUsername}/>,document.querySelector("#container"))
 	},
 
 	showSignUp: function(){
