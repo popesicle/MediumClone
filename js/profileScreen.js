@@ -35,7 +35,7 @@ var Header = React.createClass({
 	render: function() {
 		return(
 			<div id="header">
-				<img id="logo" src="http://lh5.ggpht.com/_RT2ZlZ4zOLQ/TS3lV7cYHfI/AAAAAAAAAX4/xAs5J9F_UZ8/iyudz%20blog%20logo.png"/>
+				<img id="logo" onClick={this._goHome} src="http://lh5.ggpht.com/_RT2ZlZ4zOLQ/TS3lV7cYHfI/AAAAAAAAAX4/xAs5J9F_UZ8/iyudz%20blog%20logo.png"/>
 				<button id="profile" onClick ={this._goToProfile} type="button">Profile</button>
  				<button id="logOut" onClick={this._handleLogOut} type="button">Log Out</button>
 				<button id="write" onClick={this._newStory} type="button">Tell Us A Story</button>
