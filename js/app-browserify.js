@@ -76,7 +76,7 @@ var MedRoute = Backbone.Router.extend({
 		newUsr.set('password', password)
 		newUsr.signUp().then(function(user){
 			location.hash = 'homepage'
-			alert('Congratulations! ' + user + ' has signed up for Median!')
+			alert('Congratulations! ' + this.username + ' has signed up for Median!')
 		}).fail(function(err){
 			alert('that username is already taken, please try another.')
 		})
@@ -110,6 +110,11 @@ var MedRoute = Backbone.Router.extend({
 	},
 
 	showHomeView: function(){
+		console.log('i want to fetch')
+		this.mc.fetch({
+			headers: this.mc.parseHeaders,
+			processData: true
+		}).then(function(responseData){console.log("dicks", responseData)})
 		React.render(<HomeView postCollection={this.mc}/>, document.querySelector('#container'))
 	}
 

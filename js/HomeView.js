@@ -1,6 +1,12 @@
 var React = require("react")
 
 var HomeView = React.createClass({
+
+	componentWillMount: function(){
+		var self = this
+		var updateStuff = function(){self.forceUpdate()}
+		this.props.postCollection.on('sync', updateStuff)
+	},
 	
 	_displayRecentPosts: function(posts){
 		var homepageData = this.props.postCollection.models
@@ -16,32 +22,22 @@ var HomeView = React.createClass({
 
 	render: function(){
 
-		var homepageData = this.props.postCollection.models
+		var homepageData = this.props.postCollection.models.reverse()
 
-			console.log(homepageData)
-			postCollection.fetch({
-				headers: postCollection.parseHeaders,
-				processData: true
-			}).then(function(response){
-				console.log(response)
-				homepageData = response	
-				return homepageData
-			})
-			
+		console.log(homepageData)
 
-		
-		return(
-			<div id='homepage'>
-				<CurrentInfo postCollection={this.props.postCollection} />
-				<div id='homePageHeader'>
-					<h1>Today on Moderate</h1>
-				</div>	
-				<ul>
-					{homepageData.map(this._displayRecentPosts)}
-				</ul>
-			</div>
-			)
-	}
+				return(
+					<div id='homepage'>
+						<CurrentInfo postCollection={this.props.postCollection} />
+						<div id='homePageHeader'>
+							<h1>Today on Moderate</h1>
+						</div>	
+						<ul>
+							{homepageData.map(this._displayRecentPosts)}
+						</ul>
+					</div>
+					)
+	}			
 })
 
 var CurrentInfo = React.createClass({
@@ -64,10 +60,11 @@ var RecentPosts = React.createClass({
 		return(
 			<div>
 				<ul>
+					<h2>{posts.title}</h2>
 					<li>Posted {posts.createdAt}</li>
 					<li>Last updated {posts.updatedAt}</li>
 				</ul>
-				<p>{posts.description}</p>
+				<p>{posts.body}</p>
 			</div>
 			)
 	}
