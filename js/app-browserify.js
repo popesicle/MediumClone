@@ -64,11 +64,7 @@ var MedRoute = Backbone.Router.extend({
 		'login': 'showLoginView',
 		'signup': 'showSignUp',
 		"profile": "showProfile",
-		"new-story": "createBlogPost"
-	},
-
-	createBlogPost: function() {
-		React.render(<NewBlogView />,document.querySelector("#container"))
+		"new-story": "blogPostView"
 	},
 
 	createNewUser: function(username, password){
@@ -83,6 +79,31 @@ var MedRoute = Backbone.Router.extend({
 		}).fail(function(err){
 			alert('that username is already taken, please try another.')
 		})
+	},
+
+	createBlogPost: function(title, body) {
+		var newPost = new MediumPostModel(),
+		modelParams = {
+			title: title,
+			body: body,
+			userId: Parse.User.current().id
+		}
+		newPost.set(modelParams)
+		this.mc.add(newPost)
+		newPost.save(null,{
+			headers: newPost.parseHeaders
+		}).then(
+			//success
+			function(title, body) {
+				alert("Successful blog post!")
+			}).fail(
+				//fail
+				function(err) {
+					alert("Something terible happened! Try again.")
+				}
+			)
+
+		
 	},
 
 	getUsername: function() {
@@ -129,6 +150,10 @@ var MedRoute = Backbone.Router.extend({
 
 	showLoginView: function(){
 		React.render(<LoginScreen logInUser={this.logInUser}/>, document.querySelector('#container'))
+	},
+
+	blogPostView: function() {
+		React.render(<NewBlogView sendBlogInfo={this.createBlogPost.bind(this)}/>,document.querySelector("#container"))
 	},
 
 	initialize: function(){
