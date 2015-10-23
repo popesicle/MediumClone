@@ -126,7 +126,30 @@ img {
     font-family: Quicksand;
     padding: 2.5rem;
 }
+/*===============PROFILE SCREEN===============*/
+#header {
+    height: 100px;
+    border-bottom: 2px solid black;
 
+    #logo {
+        width: 120px;
+        height: 90px;
+        margin-left: 25px;
+    }
+
+    #write {
+        border-radius: 50%;
+        border: 1px solid gray;
+        background-color: white;
+        float: right;
+        margin-top: 23px;
+        padding: 10px;
+    }
+
+    #write:focus {
+        outline: none;
+    }
+}
 
 
 
