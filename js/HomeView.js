@@ -1,5 +1,7 @@
 var React = require("react")
 
+import {Header} from "./profileScreen"
+
 var HomeView = React.createClass({
 
 	componentWillMount: function(){
@@ -28,11 +30,12 @@ var HomeView = React.createClass({
 
 				return(
 					<div id='homepage'>
+						<Header />
 						<CurrentInfo postCollection={this.props.postCollection} />
 						<div id='homePageHeader'>
 							<h1>Today on Moderate</h1>
 						</div>	
-						<ul>
+						<ul className="recentPosts">
 							{homepageData.map(this._displayRecentPosts)}
 						</ul>
 					</div>
@@ -60,7 +63,7 @@ var RecentPosts = React.createClass({
 		return(
 			<div>
 				<ul>
-					<h2>{posts.title}</h2>
+					<h3>{posts.title}</h3>
 					<li>Posted {posts.createdAt}</li>
 					<li>Last updated {posts.updatedAt}</li>
 				</ul>

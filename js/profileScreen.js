@@ -25,10 +25,14 @@ var Header = React.createClass({
 		location.hash = "new-story"
 	},
 
+	_goHome: function(){
+		location.hash = "homepage"
+	},
+	
 	render: function() {
 		return(
 			<div id="header">
-				<img id="logo" src="http://lh5.ggpht.com/_RT2ZlZ4zOLQ/TS3lV7cYHfI/AAAAAAAAAX4/xAs5J9F_UZ8/iyudz%20blog%20logo.png"/>
+				<img onClick={this._goHome}id="logo" src="http://lh5.ggpht.com/_RT2ZlZ4zOLQ/TS3lV7cYHfI/AAAAAAAAAX4/xAs5J9F_UZ8/iyudz%20blog%20logo.png"/>
 				<button id="logOut" onClick={this._handleLogOut} type="button">Log Out</button>
 				<button id="write" onClick={this._newStory} type="button">Tell Us A Story</button>
 			</div>

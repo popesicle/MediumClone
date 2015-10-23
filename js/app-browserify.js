@@ -165,7 +165,7 @@ var MedRoute = Backbone.Router.extend({
 			processData: true
 		}).then(function(responseData){console.log("dicks", responseData)})
 		React.render(<HomeView postCollection={this.mc}/>, document.querySelector('#container'))
-	}
+	},
 
 	blogPostView: function() {
 		React.render(<NewBlogView sendBlogInfo={this.createBlogPost.bind(this)}/>,document.querySelector("#container"))

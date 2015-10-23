@@ -73,19 +73,25 @@ img {
  * YOUR CODE HERE
  */
 
+.recentPosts {
+
+    max-width: 800px;
+    padding-left: 10%;
+}
+
 #homepage {
     
     min-width: 850px;
-    font-family: $quicksandFont;
+    font-family: Quicksand;
 }
 
 #homePageHeader {
 
-    font-family: $quicksandFont;
+    font-family: Quicksand;
+    padding-left: 10%;
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
-
-$quicksandFont: Quicksand, sans-serif;
-
 
 #loginDiv {
 
@@ -103,21 +109,30 @@ $quicksandFont: Quicksand, sans-serif;
         text-align: center;
     }
 
-    font-family: $quicksandFont;
+    font-family: Quicksand;
     text-align: center;
     padding: 2.5rem;
 }
 
 #loginButton {
 
+    border-radius: 999em;
+    background-color: whitesmoke;
     width: 128px;
     margin: .5rem;
+
+}
+
+#loginButton:focus {
+
+    outline: none;
 }
 
 #sidebar {
 
    float: right;
-   border: 2px solid black;
+   border-bottom: 2px solid black;
+   border-left: 2px solid black;
    width: 300px;
 
 }
@@ -141,10 +156,17 @@ $quicksandFont: Quicksand, sans-serif;
     button {
 
         margin: .5rem;
+        border-radius: 999em;
+        background-color: whitesmoke;
+    }
+
+    button:focus {
+
+        outline: none;
     }
 
     text-align: center;
-    font-family: $quicksandFont;
+    font-family: Quicksand;
     padding: 2.5rem;
 }
 /*===============PROFILE SCREEN===============*/
@@ -166,6 +188,7 @@ $quicksandFont: Quicksand, sans-serif;
         float: right;
         margin-top: 23px;
         padding: 10px;
+        margin-right: 10px;
     }
 
     #write {
@@ -183,7 +206,7 @@ $quicksandFont: Quicksand, sans-serif;
 
 #userInfo, #blogs {
     text-align: center;
-    font-family: $quicksandFont;
+    font-family: Quicksand;
     max-width: 550px;
     margin: 0 auto;
 
@@ -253,7 +276,7 @@ $quicksandFont: Quicksand, sans-serif;
 
 /*================NEW BLOG=============*/
 #newBlog {
-    font-family: $quicksandFont;
+    font-family: Quicksand;
     max-width: 550px;
     margin: 0 auto;
 
