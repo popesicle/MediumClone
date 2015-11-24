@@ -163,7 +163,7 @@ var MedRoute = Backbone.Router.extend({
 		this.mc.fetch({
 			headers: this.mc.parseHeaders,
 			processData: true
-		}).then(function(responseData){console.log("dicks", responseData)})
+		}).then(function(responseData){console.log(responseData)})
 		React.render(<HomeView postCollection={this.mc}/>, document.querySelector('#container'))
 	},
 
